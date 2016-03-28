@@ -167,30 +167,30 @@ public class CDVInstagramPlugin extends CordovaPlugin {
 				os.flush();
 				os.close();
                 is.close();
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("video/mp4");
+
+                //File media = new File(file);
+                //Uri uri = Uri.fromFile(media);
+
+                // Add the URI to the Intent.
+                //share.putExtra(Intent.EXTRA_STREAM, uri);
+
+                // Broadcast the Intent.
+                //startActivity(Intent.createChooser(share, "Share to"));
+
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
+                shareIntent.putExtra(Intent.EXTRA_TEXT, captionString);
+                shareIntent.setPackage("com.instagram.android");
+
+                this.cordova.startActivityForResult((CordovaPlugin) this, shareIntent, 12345);
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-        	Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        	shareIntent.setType("video/mp4");
-
-            //File media = new File(file);
-            //Uri uri = Uri.fromFile(media);
-
-            // Add the URI to the Intent.
-            //share.putExtra(Intent.EXTRA_STREAM, uri);
-
-            // Broadcast the Intent.
-            //startActivity(Intent.createChooser(share, "Share to"));
-
-        	shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
-        	shareIntent.putExtra(Intent.EXTRA_TEXT, captionString);
-        	shareIntent.setPackage("com.instagram.android");
-
-        	this.cordova.startActivityForResult((CordovaPlugin) this, shareIntent, 12345);
-
-        } else {
+		} else {
             this.cbContext.error("Expected one non-empty string argument.");
         }
     }
