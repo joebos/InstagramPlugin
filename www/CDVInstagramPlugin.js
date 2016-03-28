@@ -27,6 +27,22 @@ var exec = require('cordova/exec');
 var hasCheckedInstall,
     isAppInstalled;
 
+function shareVideoUrl(videoUrl, caption, callback) {
+
+  exec(function () {
+    if (cordova && cordova.plugins && cordova.plugins.clipboard && caption !== '') {
+      cordova.plugins.clipboard.copy(caption);
+    }
+
+    callback && callback(null, true);
+  },
+
+  function (err) {
+    callback && callback(err);
+  }, "Instagram", "shareVideo", [videoUrl, caption]);
+}
+
+
 function shareDataUrl(dataUrl, caption, callback) {
   var imageData = dataUrl.replace(/data:image\/(png|jpeg);base64,/, "");
 
@@ -123,7 +139,7 @@ var Plugin = {
     }
 
     if (videoUrl.indexOf("http") == 0) {
-      shareDataUrl(videoUrl, caption, callback);
+      shareVideoUrl(videoUrl, caption, callback);
     }
     else
     {
