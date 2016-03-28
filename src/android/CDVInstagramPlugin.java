@@ -164,8 +164,7 @@ public class CDVInstagramPlugin extends CordovaPlugin {
 
                 this.cordova.startActivityForResult((CordovaPlugin) this, shareIntent, 12345);
 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
