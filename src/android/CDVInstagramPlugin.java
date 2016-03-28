@@ -147,31 +147,26 @@ public class CDVInstagramPlugin extends CordovaPlugin {
                 InputStream is = ucon.getInputStream();
                 videoData = new byte[is.available()];
                 is.read(videoData);
-                is.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-        	File file = null;
-            FileOutputStream os = null;
+                File file = null;
+                FileOutputStream os = null;
 
-        	File parentDir = this.webView.getContext().getExternalFilesDir(null);
-            File[] oldVideos = parentDir.listFiles(OLD_IMAGE_FILTER);
-            for (File oldVideo : oldVideos) {
-                oldVideo.delete();
-            }
+                File parentDir = this.webView.getContext().getExternalFilesDir(null);
+                File[] oldVideos = parentDir.listFiles(OLD_IMAGE_FILTER);
+                for (File oldVideo : oldVideos) {
+                    oldVideo.delete();
+                }
 
-            try {
-                file = File.createTempFile("instagram_video", ".mp4", parentDir);
-                os = new FileOutputStream(file, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        	try {
+                try {
+                    file = File.createTempFile("instagram_video", ".mp4", parentDir);
+                    os = new FileOutputStream(file, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         		os.write(videoData);
 				os.flush();
 				os.close();
+                is.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
