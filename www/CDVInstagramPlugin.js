@@ -27,7 +27,7 @@ var exec = require('cordova/exec');
 var hasCheckedInstall,
     isAppInstalled;
 
-function shareVideoUrl(videoBase64, caption, callback) {
+function shareVideoUrl(videoFile, caption, callback) {
 
   exec(function () {
     if (cordova && cordova.plugins && cordova.plugins.clipboard && caption !== '') {
@@ -39,7 +39,7 @@ function shareVideoUrl(videoBase64, caption, callback) {
 
   function (err) {
     callback && callback(err);
-  }, "Instagram", "shareVideo", [videoBase64, caption]);
+  }, "Instagram", "shareVideo", [videoFile, caption]);
 }
 
 
@@ -114,18 +114,18 @@ var Plugin = {
     }
   },
   shareVideo: function () {
-    var videoBase64,
+    var videoFile,
         caption,
         callback;
 
     switch(arguments.length) {
     case 2:
-      videoBase64 = arguments[0];
+      videoFile = arguments[0];
       caption = '';
       callback = arguments[1];
       break;
     case 3:
-      videoBase64 = arguments[0];
+      videoFile = arguments[0];
       caption = arguments[1];
       callback = arguments[2];
       break;
@@ -138,8 +138,8 @@ var Plugin = {
       return callback && callback("oops, Instagram is not installed ... ");
     }
 
-    if (videoBase64) {
-      shareVideoUrl(videoBase64, caption, callback);
+    if (videoFile) {
+      shareVideoUrl(videoFile, caption, callback);
     }
     else
     {
