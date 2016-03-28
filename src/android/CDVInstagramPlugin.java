@@ -141,31 +141,10 @@ public class CDVInstagramPlugin extends CordovaPlugin {
         }
     }
 
-private void shareVideo(String videoBased64, String captionString) {
-        if (videoBased64 != null && videoBased64.length() > 0) {
-
-            byte[] videoData = Base64.decode(videoBased64, 0);
+    private void shareVideo(String videoFile, String captionString) {
+        if (videoFile != null && videoFile.length() > 0) {
 
             try{
-
-                File file = null;
-                FileOutputStream os = null;
-
-                File parentDir = this.webView.getContext().getExternalFilesDir(null);
-                File[] oldVideos = parentDir.listFiles(OLD_VIDEO_FILTER);
-                for (File oldVideo : oldVideos) {
-                    oldVideo.delete();
-                }
-
-                try {
-                    file = File.createTempFile("instagram_video", ".mp4", parentDir);
-                    os = new FileOutputStream(file, true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-        		os.write(videoData);
-				os.flush();
-				os.close();
 
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("video/mp4");
@@ -179,7 +158,7 @@ private void shareVideo(String videoBased64, String captionString) {
                 // Broadcast the Intent.
                 //startActivity(Intent.createChooser(share, "Share to"));
 
-                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(videoFile));
                 shareIntent.putExtra(Intent.EXTRA_TEXT, captionString);
                 shareIntent.setPackage("com.instagram.android");
 
