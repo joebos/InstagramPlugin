@@ -58,7 +58,14 @@ public class CDVInstagramPlugin extends CordovaPlugin {
         }
     };
 
-	CallbackContext cbContext;
+    private static final FilenameFilter OLD_VIDEO_FILTER = new FilenameFilter() {
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.startsWith("instagram_video");
+        }
+    };
+
+    CallbackContext cbContext;
 	
 	@Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -134,6 +141,59 @@ public class CDVInstagramPlugin extends CordovaPlugin {
         }
     }
 
+private void shareVideo(String videoBased64, String captionString) {
+        if (videoBased64 != null && videoBased64.length() > 0) {
+
+            byte[] videoData = Base64.decode(videoBased64, 0);
+
+            try{
+
+                File file = null;
+                FileOutputStream os = null;
+
+                File parentDir = this.webView.getContext().getExternalFilesDir(null);
+                File[] oldVideos = parentDir.listFiles(OLD_VIDEO_FILTER);
+                for (File oldVideo : oldVideos) {
+                    oldVideo.delete();
+                }
+
+                try {
+                    file = File.createTempFile("instagram_video", ".mp4", parentDir);
+                    os = new FileOutputStream(file, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        		os.write(videoData);
+				os.flush();
+				os.close();
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("video/mp4");
+
+                //File media = new File(file);
+                //Uri uri = Uri.fromFile(media);
+
+                // Add the URI to the Intent.
+                //share.putExtra(Intent.EXTRA_STREAM, uri);
+
+                // Broadcast the Intent.
+                //startActivity(Intent.createChooser(share, "Share to"));
+
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
+                shareIntent.putExtra(Intent.EXTRA_TEXT, captionString);
+                shareIntent.setPackage("com.instagram.android");
+
+                this.cordova.startActivityForResult((CordovaPlugin) this, shareIntent, 12345);
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+            this.cbContext.error("Expected one non-empty string argument.");
+        }
+    }
+    /*
     private void shareVideo(String videoUrl, String captionString) {
         if (videoUrl != null && videoUrl.length() > 0) {
 
@@ -152,7 +212,7 @@ public class CDVInstagramPlugin extends CordovaPlugin {
                 FileOutputStream os = null;
 
                 File parentDir = this.webView.getContext().getExternalFilesDir(null);
-                File[] oldVideos = parentDir.listFiles(OLD_IMAGE_FILTER);
+                File[] oldVideos = parentDir.listFiles(OLD_VIDEO_FILTER);
                 for (File oldVideo : oldVideos) {
                     oldVideo.delete();
                 }
@@ -194,6 +254,7 @@ public class CDVInstagramPlugin extends CordovaPlugin {
             this.cbContext.error("Expected one non-empty string argument.");
         }
     }
+    */
 
     @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
