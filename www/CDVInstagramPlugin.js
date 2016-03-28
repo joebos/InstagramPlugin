@@ -96,6 +96,39 @@ var Plugin = {
     {
       console.log("oops, Instagram image data string has to start with 'data:image'.")
     }
+  },
+  shareVideo: function () {
+    var videoUrl,
+        caption,
+        callback;
+
+    switch(arguments.length) {
+    case 2:
+      videoUrl = arguments[0];
+      caption = '';
+      callback = arguments[1];
+      break;
+    case 3:
+      videoUrl = arguments[0];
+      caption = arguments[1];
+      callback = arguments[2];
+      break;
+    default:
+    }
+
+    // sanity check
+    if (hasCheckedInstall && !isAppInstalled) {
+      console.log("oops, Instagram is not installed ... ");
+      return callback && callback("oops, Instagram is not installed ... ");
+    }
+
+    if (videoUrl.indexOf("http") == 0) {
+      shareDataUrl(videoUrl, caption, callback);
+    }
+    else
+    {
+      console.log("oops, Instagram video url needs to be a real url address")
+    }
   }
 };
 
