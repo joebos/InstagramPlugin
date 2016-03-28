@@ -138,12 +138,12 @@ var Plugin = {
       return callback && callback("oops, Instagram is not installed ... ");
     }
 
-    if (videoBase64.indexOf("http") == 0) {
+    if (videoBase64) {
       shareVideoUrl(videoBase64, caption, callback);
     }
     else
     {
-      console.log("oops, Instagram video url needs to be a real url address")
+      console.log("oops, Instagram video needs video base64 data!")
     }
   }
 };
