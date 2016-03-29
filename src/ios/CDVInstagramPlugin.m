@@ -92,7 +92,7 @@ static NSString *InstagramId = @"com.burbn.instagram";
     if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
         NSLog(@"open in instagram");
 
-        NSString *escapedAssetUrl = [[assetURL absoluteString].percentEscape];
+        NSString *escapedAssetUrl = [assetURL.percentEscape];
         NSString *escapedCaption  = [caption.percentEscape];
 
         NSURL *instagramURL       = [NSURL URLWithString:[NSString stringWithFormat:@"instagram://library?AssetPath=%@&InstagramCaption=%@", escapedAssetUrl, escapedCaption]];
