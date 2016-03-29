@@ -34,5 +34,6 @@
 
 - (void)isInstalled:(CDVInvokedUrlCommand*)command;
 - (void)share:(CDVInvokedUrlCommand*)command;
+- (void)shareVideo:(CDVInvokedUrlCommand*)command;
 
 @end
