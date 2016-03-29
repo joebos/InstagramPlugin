@@ -83,7 +83,7 @@ static NSString *InstagramId = @"com.burbn.instagram";
 - (void)shareVideo:(CDVInvokedUrlCommand*)command {
     self.callbackId = command.callbackId;
     self.toInstagram = FALSE;
-    NSString    *assetURL = [command argumentAtIndex:0];
+    NSString    *assetURL_urlencoded = [command argumentAtIndex:0];
     NSString    *caption = [command argumentAtIndex:1];
 
     CDVPluginResult *result;
@@ -92,10 +92,10 @@ static NSString *InstagramId = @"com.burbn.instagram";
     if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
         NSLog(@"open in instagram");
 
-        NSString *escapedAssetUrl = [assetURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        //NSString *escapedAssetUrl = [assetURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         NSString *escapedCaption  = [caption stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 
-        NSURL *instagramURL       = [NSURL URLWithString:[NSString stringWithFormat:@"instagram://library?AssetPath=%@&InstagramCaption=%@", escapedAssetUrl, escapedCaption]];
+        NSURL *instagramURL       = [NSURL URLWithString:[NSString stringWithFormat:@"instagram://library?AssetPath=%@&InstagramCaption=%@", assetURL_urlencoded, escapedCaption]];
 
         [[UIApplication sharedApplication] openURL:instagramURL];
 
