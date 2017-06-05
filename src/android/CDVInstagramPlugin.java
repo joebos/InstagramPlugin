@@ -75,11 +75,19 @@ public class CDVInstagramPlugin extends CordovaPlugin {
         if (action.equals("share")) {
             String imageString = args.getString(0);
             String captionString = args.getString(1);
+		
+	    PluginResult result = new PluginResult(Status.NO_RESULT);
+            result.setKeepCallback(true);
+		
             this.share(imageString, captionString);
             return true;
         } else if (action.equals("shareVideo")) {
             String videoUrl = args.getString(0);
             String captionString = args.getString(1);
+		
+    	    PluginResult result = new PluginResult(Status.NO_RESULT);
+            result.setKeepCallback(true);
+		
             this.shareVideo(videoUrl, captionString);
             return true;
         } else if (action.equals("isInstalled")) {
@@ -130,11 +138,11 @@ public class CDVInstagramPlugin extends CordovaPlugin {
         	
         	Intent shareIntent = new Intent(Intent.ACTION_SEND);
         	shareIntent.setType("image/*");
-        	shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
+        	shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
         	shareIntent.putExtra(Intent.EXTRA_TEXT, captionString);
         	shareIntent.setPackage("com.instagram.android");
         	
-        	this.cordova.startActivityForResult((CordovaPlugin) this, shareIntent, 12345);
+        	this.cordova.startActivityForResult((CordovaPlugin) this, Intent.createChooser(shareIntent, "Share to"), 12345);
         	
         } else {
             this.cbContext.error("Expected one non-empty string argument.");
@@ -158,11 +166,11 @@ public class CDVInstagramPlugin extends CordovaPlugin {
                 // Broadcast the Intent.
                 //startActivity(Intent.createChooser(share, "Share to"));
 
-                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(videoFile));
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(videoFile));
                 shareIntent.putExtra(Intent.EXTRA_TEXT, captionString);
                 shareIntent.setPackage("com.instagram.android");
 
-                this.cordova.startActivityForResult((CordovaPlugin) this, shareIntent, 12345);
+                this.cordova.startActivityForResult((CordovaPlugin) this, Intent.createChooser(shareIntent, "Share to"), 12345);
 
 			} catch (Exception e) {
 				e.printStackTrace();
