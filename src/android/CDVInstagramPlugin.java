@@ -32,6 +32,8 @@ import java.io.IOException;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
+import org.apache.cordova.PluginResult.Status;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -43,10 +45,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
-
-import java.net.URL;
-import java.net.URLConnection;
-import java.io.InputStream;
 
 @TargetApi(Build.VERSION_CODES.FROYO)
 public class CDVInstagramPlugin extends CordovaPlugin {
