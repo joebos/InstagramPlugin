@@ -28,11 +28,12 @@ var hasCheckedInstall,
     isAppInstalled;
 
 function shareVideoUrl(videoFile, caption, callback) {
-
-  exec(function () {
+    
     if (cordova && cordova.plugins && cordova.plugins.clipboard && caption !== '') {
       cordova.plugins.clipboard.copy(caption);
     }
+    
+  exec(function () {
 
     callback && callback(null, true);
   },
@@ -46,10 +47,10 @@ function shareVideoUrl(videoFile, caption, callback) {
 function shareDataUrl(dataUrl, caption, callback) {
   var imageData = dataUrl.replace(/data:image\/(png|jpeg);base64,/, "");
 
-  exec(function () {
     if (cordova && cordova.plugins && cordova.plugins.clipboard && caption !== '') {
       cordova.plugins.clipboard.copy(caption);
     }
+  exec(function () {
 
     callback && callback(null, true);
   },
