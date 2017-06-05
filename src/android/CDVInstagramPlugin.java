@@ -164,7 +164,7 @@ public class CDVInstagramPlugin extends CordovaPlugin {
                 // Broadcast the Intent.
                 //startActivity(Intent.createChooser(share, "Share to"));
 
-                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(videoFile));
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(videoFile));
                 shareIntent.putExtra(Intent.EXTRA_TEXT, captionString);
                 shareIntent.setPackage("com.instagram.android");
 
